@@ -1,9 +1,10 @@
 Package: SOHEstimate
 Title: Estimte SOH of battery
 Version: 0.1
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("Qinghai", "Guo", email = "guoqinghai1121@hotmail.com", role = c("aut", "cre"))
+Description: just test.
 Depends: R (>= 3.4.1)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.0.1
