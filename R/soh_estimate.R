@@ -22,20 +22,27 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
   #data_soh[,5]<-data_soh[,4]/size
   
   #define a distance function
-  distance<-matrix(rep(0,len*2),nrow=len)
-  lengthall<-dim(data_all)[1]
+  distance<-matrix(rep(0,len*2),nrow=len) #cycle，distance
+  lengthall<-dim(data_all)[1] #length of the training data
+  
+  #global variables
+  #end_t<-data_in[esti_len,1]
+  #end_l<-data_in[esti_len,1]-data_in[esti_len-1,1]
   m<-1
+  
+  
   
   timestart<-Sys.time()
   for(i in 0:(len-1))
   {
+    #t1<-Sys.time()
     #x<-data_all[(1:elen),1]
     #y<-data_all[(i*elen+1):((i+1)*elen),3]
     #xyspline<-smooth.spline(x,y,cv=T)
     ###############
     x<-0
     y<-0
-    while(data_all[m,1]==i+1 && data_all<=lengthall)
+    while(data_all[m,1]==i+1&&is.na(data_all[m,1])!=T)
     {
       x<-c(x,data_all[m,2])
       y<-c(y,data_all[m,3])
@@ -43,11 +50,12 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
     }
     x<-x[-1]
     y<-y[-1]
-    xyspline<-smooth.spline(x,y,cv=T)
-    
+    xyspline<-smooth.spline(x,y,cv=T) #the fitting function for every cycle
+    #t3<-Sys.time()
     
     ##############
     sum<-10000
+    t4<-Sys.time()
     for(j in 0:(length(x)-esti_len-1))
     {
       sum_temp<-0
@@ -59,6 +67,7 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
     }
     distance[i+1,1]<-sum
     distance[i+1,2]<-data_all[m-1,1]
+    t2<-Sys.time()
   }
   timeend<-Sys.time()
   distance_new<-distance[order(distance[,1]),]
