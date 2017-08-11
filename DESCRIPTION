@@ -1,6 +1,6 @@
 Package: SOHEstimate
 Title: Estimte SOH of battery
-Version: 0.2
+Version: 0.3
 Authors@R: person("Qinghai", "Guo", email = "guoqinghai1121@hotmail.com", role = c("aut", "cre"))
 Description: just test.
 Depends: R (>= 3.4.1)

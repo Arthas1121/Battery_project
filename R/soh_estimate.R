@@ -1,4 +1,4 @@
-soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
+soh_estimate<-function(data_in,size=65,len=750,...)
 {
   #data_in should be a n*2 matrix, with first line the time, and second line the voltage 
   #parameters for training set
@@ -7,6 +7,7 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
   #read training data
   data_all<-read.csv(sprintf('Data/%d_predict.csv',size),header=T, sep=",")
   data_soh<-read.csv(sprintf("Data/%d_intotal.csv",size),header=T, sep=",")
+  data_soh<-as.matrix(data_soh)
   #################################
   ##need to normalize data_soh input
   #for(i in 1:dim(data_all)[1])
@@ -55,7 +56,7 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
     
     ##############
     sum<-10000
-    t4<-Sys.time()
+    #t4<-Sys.time()
     for(j in 0:(length(x)-esti_len-1))
     {
       sum_temp<-0
@@ -67,11 +68,11 @@ soh_estimate<-function(data_in,size=65,len=750,elen=200,...)
     }
     distance[i+1,1]<-sum
     distance[i+1,2]<-data_all[m-1,1]
-    t2<-Sys.time()
+    #t2<-Sys.time()
   }
   timeend<-Sys.time()
   distance_new<-distance[order(distance[,1]),]
   newindex<-distance_new[1:5,2] #距离最近的5个数据的平均值作为估计值
-  data_esti<-mean(data_soh[newindex,5])
+  data_esti<-mean(data_soh[newindex])
   paste(sprintf("SOH=%.2f",data_esti*100),"%",sep="")
 }
