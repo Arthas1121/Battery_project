@@ -62,7 +62,7 @@ soh_estimate<-function(data_in,size=65,len=750,...)
       sum_temp<-0
       for(k in 2:esti_len)
       {
-        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+20*j)$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
+        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+data_in[j+1,1])$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
       }
       if(sum_temp<sum) sum<-sum_temp
     }
