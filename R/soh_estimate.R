@@ -1,4 +1,4 @@
-soh_estimate<-function(data_in,size=65,len=750,...)
+soh_estimate<-function(data_in,size=65,len=750,t=20,...)
 {
   #data_in should be a n*2 matrix, with first line the time, and second line the voltage 
   #parameters for training set
@@ -30,7 +30,8 @@ soh_estimate<-function(data_in,size=65,len=750,...)
   #end_t<-data_in[esti_len,1]
   #end_l<-data_in[esti_len,1]-data_in[esti_len-1,1]
   m<-1
-  
+  n<-1
+  len_all<-dim(data_all)[1]
   
   
   #timestart<-Sys.time()
@@ -45,10 +46,21 @@ soh_estimate<-function(data_in,size=65,len=750,...)
     y<-0
     while(data_all[m,1]==i+1&&is.na(data_all[m,1])!=T)
     {
-      x<-c(x,data_all[m,2])
       y<-c(y,data_all[m,3])
+      x<-c(x,data_all[m,2])
       m<-m+1
+      #if(data_all[m,1]>i+1) break
     }
+    #for(m in n:len_all)
+    #{
+    #  if(data_all[m,1]==i+1 &&is.na(data_all[m,1])!=T) 
+    #  {
+    #    y<-c(y,data_all[m,3])
+    #    x<-c(x,data_all[m,2])
+    #    n<-m
+    #    if(data_all[m,1]>i+1) break
+    #  }
+    #}
     x<-x[-1]
     y<-y[-1]
     xyspline<-smooth.spline(x,y,cv=T) #the fitting function for every cycle
@@ -62,7 +74,7 @@ soh_estimate<-function(data_in,size=65,len=750,...)
       sum_temp<-0
       for(k in 2:esti_len)
       {
-        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+20*j)$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
+        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+t*j)$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
       }
       if(sum_temp<sum) sum<-sum_temp
     }
