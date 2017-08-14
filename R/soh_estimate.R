@@ -33,7 +33,7 @@ soh_estimate<-function(data_in,size=65,len=750,...)
   
   
   
-  timestart<-Sys.time()
+  #timestart<-Sys.time()
   for(i in 0:(len-1))
   {
     #t1<-Sys.time()
@@ -62,7 +62,7 @@ soh_estimate<-function(data_in,size=65,len=750,...)
       sum_temp<-0
       for(k in 2:esti_len)
       {
-        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+data_in[j+1,1])$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
+        sum_temp<-sum_temp+(predict(xyspline,data_in[k,1]+20*j)$y-data_in[k,2])^2*(data_in[k,1]-data_in[k-1,1])
       }
       if(sum_temp<sum) sum<-sum_temp
     }
@@ -70,7 +70,7 @@ soh_estimate<-function(data_in,size=65,len=750,...)
     distance[i+1,2]<-data_all[m-1,1]
     #t2<-Sys.time()
   }
-  timeend<-Sys.time()
+  #timeend<-Sys.time()
   distance_new<-distance[order(distance[,1]),]
   newindex<-distance_new[1:5,2] #距离最近的5个数据的平均值作为估计值
   data_esti<-mean(data_soh[newindex])
